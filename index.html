@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Data Collection</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        form { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; }
+        label, select, input, textarea { display: block; width: 100%; margin-bottom: 10px; }
+    </style>
+    <script>
+        function updateForm() {
+            let formFields = document.getElementById("formFields");
+            let selectedCertificate = document.getElementById("certificateType").value;
+            formFields.innerHTML = "";
+            
+            let fields = {
+                "Birth Certificate": ["Name of the child", "Date and place of birth", "Gender", "Parents' names", "Hospital details", "Mobile number"],
+                "Death Certificate": ["Name of the deceased", "Date and place of death", "Cause of death", "Informant's details", "Mobile number"],
+                "Marriage Certificate": ["Bride's name", "Groom's name", "Date and place of marriage", "Witness details", "Parents' names", "Mobile number"],
+                "Income Certificate": ["Applicant's name", "Family income details", "Occupation details", "Mobile number"],
+                "Caste Certificate": ["Applicant's name", "Caste details", "Family details", "Mobile number"],
+                "Domicile Certificate": ["Applicant's name", "Duration of residence", "Mobile number"],
+                "Residence Certificate": ["Applicant's name", "Duration of residence", "Mobile number"],
+                "Relationship Certificate": ["Applicant's name", "Relationship details", "Mobile number"],
+                "Legal Heir Certificate": ["Deceased person's details", "Legal heirs' details", "Mobile number"],
+                "Life Certificate": ["Applicant's name", "Pension details", "Mobile number"],
+                "Possession Certificate": ["Property details", "Applicant's name", "Mobile number"],
+                "Surviving Member Certificate": ["Deceased person's details", "Surviving family members' details", "Mobile number"],
+                "Inter-Caste Marriage Certificate": ["Bride's name", "Groom's name", "Caste details", "Mobile number"],
+                "Solvency Certificate": ["Applicant's name", "Financial details", "Mobile number"],
+                "Non-Creamy Layer Certificate": ["Applicant's name", "Family income details", "Caste details", "Mobile number"],
+                "Conversion Certificate (Land Use)": ["Property details", "Purpose of conversion", "Mobile number"],
+                "Family Membership Certificate": ["Family members' details", "Applicant's name", "Mobile number"],
+                "Migration Certificate": ["Applicant's name", "Reason for migration", "Mobile number"],
+                "Nationality Certificate": ["Applicant's name", "Proof of Indian nationality", "Mobile number"],
+                "Destitute Certificate": ["Applicant's name", "Financial status", "Mobile number"],
+                "Unemployment Certificate": ["Applicant's name", "Educational qualifications", "Mobile number"]
+            };
+            
+            if (fields[selectedCertificate]) {
+                fields[selectedCertificate].forEach(field => {
+                    let label = document.createElement("label");
+                    label.textContent = field;
+                    let input = document.createElement("input");
+                    input.type = "text";
+                    input.name = field.toLowerCase().replace(/\s+/g, "_");
+                    formFields.appendChild(label);
+                    formFields.appendChild(input);
+                });
+                
+                let docLabel = document.createElement("label");
+                docLabel.textContent = "Upload Required Documents (Max 100MB):";
+                formFields.appendChild(docLabel);
+                
+                let requiredDocs = ["Aadhaar Card", "Proof of Address", "Relevant Certificates", "Supporting Documents"];
+                requiredDocs.forEach(doc => {
+                    let docInputLabel = document.createElement("label");
+                    docInputLabel.textContent = doc;
+                    let fileInput = document.createElement("input");
+                    fileInput.type = "file";
+                    fileInput.name = doc.toLowerCase().replace(/\s+/g, "_");
+                    fileInput.accept = ".pdf,.jpg,.jpeg,.png,.doc,.docx";
+                    fileInput.onchange = function() {
+                        if (this.files[0].size > 100 * 1024 * 1024) {
+                            alert("File size exceeds 100MB limit!");
+                            this.value = "";
+                        }
+                    };
+                    formFields.appendChild(docInputLabel);
+                    formFields.appendChild(fileInput);
+                });
+                
+                let secretLabel = document.createElement("label");
+                secretLabel.textContent = "Enter Secret Code:";
+                let secretInput = document.createElement("input");
+                secretInput.type = "password";
+                secretInput.name = "secret_code";
+                formFields.appendChild(secretLabel);
+                formFields.appendChild(secretInput);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Application Form</h2>
+    <form>
+        <label for="certificateType">Select Certificate Type:</label>
+        <select id="certificateType" name="certificateType" onchange="updateForm()">
+            <option value="">-- Select --</option>
+            <option value="Birth Certificate">Birth Certificate</option>
+            <option value="Death Certificate">Death Certificate</option>
+            <option value="Marriage Certificate">Marriage Certificate</option>
+            <option value="Income Certificate">Income Certificate</option>
+            <option value="Caste Certificate">Caste Certificate</option>
+            <option value="Domicile Certificate">Domicile Certificate</option>
+            <option value="Residence Certificate">Residence Certificate</option>
+            <option value="Relationship Certificate">Relationship Certificate</option>
+            <option value="Legal Heir Certificate">Legal Heir Certificate</option>
+            <option value="Life Certificate">Life Certificate</option>
+            <option value="Possession Certificate">Possession Certificate</option>
+            <option value="Surviving Member Certificate">Surviving Member Certificate</option>
+            <option value="Inter-Caste Marriage Certificate">Inter-Caste Marriage Certificate</option>
+            <option value="Solvency Certificate">Solvency Certificate</option>
+            <option value="Non-Creamy Layer Certificate">Non-Creamy Layer Certificate</option>
+            <option value="Conversion Certificate (Land Use)">Conversion Certificate (Land Use)</option>
+            <option value="Family Membership Certificate">Family Membership Certificate</option>
+            <option value="Migration Certificate">Migration Certificate</option>
+            <option value="Nationality Certificate">Nationality Certificate</option>
+            <option value="Destitute Certificate">Destitute Certificate</option>
+            <option value="Unemployment Certificate">Unemployment Certificate</option>
+        </select>
+        <div id="formFields"></div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
